@@ -98,6 +98,50 @@ export interface InterventionLog {
   timestamp: string;
   zoneId?: string;
   pileId?: string;
+  extra?: {
+    isBatch?: boolean;
+    alertCount?: number;
+    fromStrategy?: StrategyType;
+    toStrategy?: StrategyType;
+  };
+}
+
+export interface StrategyChangeLog {
+  id: string;
+  operatorId: string;
+  operatorName: string;
+  fromStrategy: StrategyType;
+  fromStrategyName: string;
+  toStrategy: StrategyType;
+  toStrategyName: string;
+  timestamp: string;
+  affectedZones: string[];
+  parameterChanges: {
+    vipReservedPower: { from: number; to: number };
+    accessibleReservedPower: { from: number; to: number };
+    singlePileMaxPower: { from: number; to: number };
+    fastChargePriority: { from: number; to: number };
+  };
+  trigger: 'manual' | 'alert' | 'schedule' | 'batch';
+  triggerAlertIds?: string[];
+}
+
+export interface StrategyPreview {
+  fromStrategy: ChargeStrategy;
+  toStrategy: ChargeStrategy;
+  affectedZones: string[];
+  estimatedPowerChange: {
+    totalReservedChange: number;
+    avgPilePowerChange: number;
+    fastChargeBoost: number;
+    slowChargeReduction: number;
+  };
+  affectedPilesCount: {
+    vipPiles: number;
+    accessiblePiles: number;
+    fastChargePiles: number;
+    slowChargePiles: number;
+  };
 }
 
 export interface TurnoverStat {

@@ -7,13 +7,15 @@ import dayjs from 'dayjs';
 import { strategyIconMap, strategyColorMap } from '@/data/mockStrategy';
 import { useChargeStore } from '@/store/useChargeStore';
 import { mockTurnoverStats, mockDailySummary } from '@/data/mockTeam';
+import type { StrategyChangeLog } from '@/types';
 
-type TabKey = 'team' | 'logs' | 'turnover' | 'summary';
+type TabKey = 'team' | 'logs' | 'strategy' | 'turnover' | 'summary';
 
 const TeamPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabKey>('team');
   const teamMembers = useChargeStore(s => s.teamMembers);
   const interventionLogs = useChargeStore(s => s.interventionLogs);
+  const strategyChangeLogs = useChargeStore(s => s.strategyChangeLogs);
   const authorizePowerBoost = useChargeStore(s => s.authorizePowerBoost);
   const addIntervention = useChargeStore(s => s.addIntervention);
 
@@ -26,6 +28,7 @@ const TeamPage: React.FC = () => {
   const tabs: { key: TabKey; label: string }[] = [
     { key: 'team', label: '在岗人员' },
     { key: 'logs', label: '干预记录' },
+    { key: 'strategy', label: '策略变更' },
     { key: 'turnover', label: '翻台效率' },
     { key: 'summary', label: '复盘摘要' }
   ];
@@ -70,6 +73,20 @@ const TeamPage: React.FC = () => {
   const todayInterventionCount = interventionLogs.filter(
     log => dayjs(log.timestamp).format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD')
   ).length || interventionLogs.length;
+
+  const triggerLabels: Record<StrategyChangeLog['trigger'], { label: string; className: string }> = {
+    manual: { label: '手动切换', className: styles.triggerManual },
+    alert: { label: '告警触发', className: styles.triggerAlert },
+    batch: { label: '批量处理', className: styles.triggerBatch },
+    schedule: { label: '定时切换', className: styles.triggerSchedule }
+  };
+
+  const formatDelta = (from: number, to: number) => {
+    const diff = to - from;
+    if (diff === 0) return { text: '—', className: '' };
+    if (diff > 0) return { text: `↑${diff}`, className: styles.schDeltaUp };
+    return { text: `↓${Math.abs(diff)}`, className: styles.schDeltaDown };
+  };
 
   return (
     <ScrollView className={styles.page} scrollY>
@@ -155,14 +172,21 @@ const TeamPage: React.FC = () => {
         {activeTab === 'logs' && (
           <View className={styles.logList}>
             {interventionLogs.length === 0 ? (
-              <View className={styles.emptyState}>
+              <View className={styles.schEmpty}>
                 <Text>暂无干预记录</Text>
               </View>
             ) : (
               interventionLogs.map(log => (
                 <View key={log.id} className={styles.logCard}>
                   <View className={styles.logHeader}>
-                    <Text className={styles.logAction}>{log.action}</Text>
+                    <View style={{ display: 'flex', alignItems: 'center' }}>
+                      <Text className={styles.logAction}>{log.action}</Text>
+                      {log.extra?.isBatch && (
+                        <View className={styles.logBatchTag}>
+                          批量×{log.extra.alertCount || log.extra.alertCount === 0 ? '0' : log.extra.alertCount}
+                        </View>
+                      )}
+                    </View>
                     <Text className={styles.logTime}>
                       {dayjs(log.timestamp).format('HH:mm')}
                     </Text>
@@ -171,6 +195,114 @@ const TeamPage: React.FC = () => {
                   <Text className={styles.logDesc}>{log.description}</Text>
                 </View>
               ))
+            )}
+          </View>
+        )}
+
+        {activeTab === 'strategy' && (
+          <View>
+            {strategyChangeLogs.length === 0 ? (
+              <View className={styles.schEmpty}>
+                <Text>暂无策略变更记录</Text>
+              </View>
+            ) : (
+              strategyChangeLogs.map((change: StrategyChangeLog) => {
+                const triggerInfo = triggerLabels[change.trigger];
+                const vipDelta = formatDelta(
+                  change.parameterChanges.vipReservedPower.from,
+                  change.parameterChanges.vipReservedPower.to
+                );
+                const accessDelta = formatDelta(
+                  change.parameterChanges.accessibleReservedPower.from,
+                  change.parameterChanges.accessibleReservedPower.to
+                );
+                const powerDelta = formatDelta(
+                  change.parameterChanges.singlePileMaxPower.from,
+                  change.parameterChanges.singlePileMaxPower.to
+                );
+                const priorityDelta = formatDelta(
+                  change.parameterChanges.fastChargePriority.from,
+                  change.parameterChanges.fastChargePriority.to
+                );
+                return (
+                  <View key={change.id} className={styles.strategyChangeCard}>
+                    <View className={styles.schHeader}>
+                      <View className={styles.schTitle}>
+                        <Text>🔄 策略变更</Text>
+                        <View className={classnames(styles.schTriggerTag, triggerInfo.className)}>
+                          <Text>{triggerInfo.label}</Text>
+                        </View>
+                      </View>
+                      <Text className={styles.schTime}>
+                        {dayjs(change.timestamp).format('MM-DD HH:mm')}
+                      </Text>
+                    </View>
+                    <Text className={styles.schOperator}>{change.operatorName}</Text>
+
+                    <View className={styles.schChangeRow}>
+                      <View className={styles.schFrom}>
+                        <Text style={{ fontSize: 28 }}>{strategyIconMap[change.fromStrategy]}</Text>
+                        <Text style={{ color: strategyColorMap[change.fromStrategy] }}>
+                          {change.fromStrategyName}
+                        </Text>
+                      </View>
+                      <Text className={styles.schArrow}>→</Text>
+                      <View className={styles.schTo}>
+                        <Text style={{ fontSize: 28 }}>{strategyIconMap[change.toStrategy]}</Text>
+                        <Text style={{ color: strategyColorMap[change.toStrategy] }}>
+                          {change.toStrategyName}
+                        </Text>
+                      </View>
+                    </View>
+
+                    <View className={styles.schParams}>
+                      <View className={styles.schParamItem}>
+                        <Text>VIP预留</Text>
+                        <View className={styles.schParamValue}>
+                          <Text>{change.parameterChanges.vipReservedPower.to}kW</Text>
+                          <Text className={vipDelta.className}>{vipDelta.text}</Text>
+                        </View>
+                      </View>
+                      <View className={styles.schParamItem}>
+                        <Text>无障碍预留</Text>
+                        <View className={styles.schParamValue}>
+                          <Text>{change.parameterChanges.accessibleReservedPower.to}kW</Text>
+                          <Text className={accessDelta.className}>{accessDelta.text}</Text>
+                        </View>
+                      </View>
+                      <View className={styles.schParamItem}>
+                        <Text>单桩上限</Text>
+                        <View className={styles.schParamValue}>
+                          <Text>{change.parameterChanges.singlePileMaxPower.to}kW</Text>
+                          <Text className={powerDelta.className}>{powerDelta.text}</Text>
+                        </View>
+                      </View>
+                      <View className={styles.schParamItem}>
+                        <Text>快补优先级</Text>
+                        <View className={styles.schParamValue}>
+                          <Text>{change.parameterChanges.fastChargePriority.to}级</Text>
+                          <Text className={priorityDelta.className}>{priorityDelta.text}</Text>
+                        </View>
+                      </View>
+                    </View>
+
+                    {change.affectedZones.length > 0 && (
+                      <>
+                        <Text style={{ fontSize: 24, color: '#86909C', marginBottom: 8 }}>
+                          影响区域 ({change.affectedZones.length}个)
+                        </Text>
+                        <View className={styles.schZones}>
+                          {change.affectedZones.map(z => (
+                            <View key={z} className={styles.schZoneTag}>
+                              <Text>{z}区</Text>
+                            </View>
+                          ))}
+                        </View>
+                      </>
+                    )}
+                  </View>
+                );
+              })
             )}
           </View>
         )}

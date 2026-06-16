@@ -12,9 +12,11 @@ const statusLabels: Record<PileStatus, string> = {
   reserved: '预留'
 };
 
-const PileCard: React.FC<{ pile: ChargingPile; onClick?: () => void }> = ({ pile, onClick }) => {
-  const powerPercent = pile.maxPower > 0 ? Math.round((pile.currentPower / pile.maxPower) * 100) : 0;
+const PileCard: React.FC<{ pile: ChargingPile; displayPower?: number; onClick?: () => void }> = ({ pile, displayPower, onClick }) => {
+  const showPower = displayPower !== undefined ? displayPower : pile.currentPower;
+  const powerPercent = pile.maxPower > 0 ? Math.round((showPower / pile.maxPower) * 100) : 0;
   const isFast = pile.vehicleType === 'fastCharge';
+  const powerAdjusted = displayPower !== undefined && displayPower !== pile.currentPower;
 
   const getCardClass = () => {
     if (pile.isVip) return styles.cardVip;
@@ -60,9 +62,16 @@ const PileCard: React.FC<{ pile: ChargingPile; onClick?: () => void }> = ({ pile
         <View className={styles.info}>
           <Text className={styles.plate}>{pile.plateNumber}</Text>
           {pile.status === 'charging' && (
-            <View>
-              <Text className={styles.power}>{pile.currentPower}</Text>
-              <Text className={styles.powerUnit}>kW</Text>
+            <View style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <View>
+                <Text className={styles.power}>{showPower}</Text>
+                <Text className={styles.powerUnit}>kW</Text>
+              </View>
+              {powerAdjusted && (
+                <Text style={{ fontSize: 18, color: '#FF7D00', fontWeight: '500' }}>
+                  {displayPower! > pile.currentPower ? '↑' : '↓'}
+                </Text>
+              )}
             </View>
           )}
         </View>

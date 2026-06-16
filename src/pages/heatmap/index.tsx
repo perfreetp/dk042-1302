@@ -17,10 +17,20 @@ const HeatmapPage: React.FC = () => {
   const storePiles = useChargeStore(s => s.piles);
   const authorizePowerBoost = useChargeStore(s => s.authorizePowerBoost);
   const handleOccupancy = useChargeStore(s => s.handleOccupancy);
+  const getPileDisplayPower = useChargeStore(s => s.getPileDisplayPower);
+  const activeStrategyId = useChargeStore(s => s.activeStrategyId);
+  const strategies = useChargeStore(s => s.strategies);
+
+  const activeStrategy = strategies.find(s => s.id === activeStrategyId);
 
   const selectedPile = useMemo(
     () => storePiles.find(p => p.id === selectedPileId) || null,
     [storePiles, selectedPileId]
+  );
+
+  const selectedPileDisplayPower = useMemo(
+    () => selectedPile ? getPileDisplayPower(selectedPile) : 0,
+    [selectedPile, getPileDisplayPower]
   );
 
   const pilesByZone = useMemo(() => {
@@ -167,7 +177,12 @@ const HeatmapPage: React.FC = () => {
             </View>
             <View className={styles.pileGrid}>
               {piles.map(pile => (
-                <PileCard key={pile.id} pile={pile} onClick={() => handlePileClick(pile)} />
+                <PileCard
+                  key={pile.id}
+                  pile={pile}
+                  displayPower={getPileDisplayPower(pile)}
+                  onClick={() => handlePileClick(pile)}
+                />
               ))}
             </View>
           </View>
@@ -200,7 +215,37 @@ const HeatmapPage: React.FC = () => {
               <>
                 <View className={styles.modalRow}>
                   <Text className={styles.modalLabel}>当前功率</Text>
-                  <Text className={styles.modalValue}>{selectedPile.currentPower} / {selectedPile.maxPower} kW</Text>
+                  <View style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Text className={styles.modalValue}>
+                      {selectedPileDisplayPower} / {selectedPile.maxPower} kW
+                    </Text>
+                    {selectedPileDisplayPower !== selectedPile.currentPower && (
+                      <Text
+                        style={{
+                          fontSize: 22,
+                          color: selectedPileDisplayPower > selectedPile.currentPower ? '#00B42A' : '#F53F3F',
+                          fontWeight: '500'
+                        }}
+                      >
+                        ({selectedPileDisplayPower > selectedPile.currentPower ? '↑' : '↓'}
+                        {Math.abs(selectedPileDisplayPower - selectedPile.currentPower)}kW)
+                      </Text>
+                    )}
+                  </View>
+                </View>
+                {selectedPileDisplayPower !== selectedPile.currentPower && activeStrategy && (
+                  <View className={styles.modalRow}>
+                    <Text className={styles.modalLabel}>功率调整</Text>
+                    <Text className={styles.modalValue} style={{ fontSize: 24, color: '#FF7D00' }}>
+                      受「{activeStrategy.name}」策略调整
+                    </Text>
+                  </View>
+                )}
+                <View className={styles.modalRow}>
+                  <Text className={styles.modalLabel}>原始功率</Text>
+                  <Text className={styles.modalValue} style={{ color: '#86909C' }}>
+                    {selectedPile.currentPower} kW
+                  </Text>
                 </View>
                 <View className={styles.modalRow}>
                   <Text className={styles.modalLabel}>已充电量</Text>

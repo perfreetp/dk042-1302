@@ -387,3 +387,202 @@
     left: -8rpx;
   }
 }
+
+.logList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.logCard {
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.logHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-xs;
+}
+
+.logAction {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.logTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.logOperator {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  margin-bottom: $spacing-xs;
+}
+
+.logDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+}
+
+.logBatchTag {
+  display: inline-block;
+  font-size: $font-size-xs;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-round;
+  background: rgba(255, 125, 0, 0.1);
+  color: $color-warning;
+  font-weight: $font-weight-medium;
+  margin-left: $spacing-xs;
+}
+
+/* 策略变更卡片 */
+.strategyChangeCard {
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  box-shadow: $shadow-card;
+  border-left: 6rpx solid $color-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.schHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-sm;
+}
+
+.schTitle {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.schTriggerTag {
+  font-size: $font-size-xs;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-round;
+  font-weight: $font-weight-medium;
+}
+
+.triggerManual {
+  background: rgba(22, 119, 255, 0.1);
+  color: $color-primary;
+}
+
+.triggerAlert {
+  background: rgba(245, 63, 63, 0.1);
+  color: $color-error;
+}
+
+.triggerBatch {
+  background: rgba(255, 125, 0, 0.1);
+  color: $color-warning;
+}
+
+.triggerSchedule {
+  background: rgba(0, 180, 42, 0.1);
+  color: $color-success;
+}
+
+.schTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.schOperator {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  margin-bottom: $spacing-sm;
+  font-weight: $font-weight-medium;
+}
+
+.schChangeRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background: $color-bg-hover;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-sm;
+}
+
+.schFrom, .schTo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+}
+
+.schArrow {
+  font-size: $font-size-lg;
+  color: $color-primary;
+  font-weight: $font-weight-bold;
+}
+
+.schParams {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+}
+
+.schParamItem {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.schParamValue {
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.schDeltaUp {
+  color: $color-success;
+  font-size: $font-size-xs;
+}
+
+.schDeltaDown {
+  color: $color-error;
+  font-size: $font-size-xs;
+}
+
+.schZones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+  margin-top: $spacing-xs;
+}
+
+.schZoneTag {
+  font-size: $font-size-xs;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-round;
+  background: rgba(22, 119, 255, 0.1);
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.schEmpty {
+  padding: $spacing-xl 0;
+  text-align: center;
+  color: $color-text-tertiary;
+  font-size: $font-size-sm;
+}

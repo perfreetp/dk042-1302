@@ -235,3 +235,221 @@
     opacity: 0.85;
   }
 }
+
+.previewMask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.previewModal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $color-bg-card;
+  border-top-left-radius: $radius-xl;
+  border-top-right-radius: $radius-xl;
+  padding: $spacing-lg;
+  padding-bottom: calc(#{$spacing-lg} + env(safe-area-inset-bottom));
+  z-index: 101;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.previewHandle {
+  width: 80rpx;
+  height: 8rpx;
+  background: $color-border;
+  border-radius: $radius-round;
+  margin: 0 auto $spacing-md;
+}
+
+.previewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+}
+
+.previewTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.previewStrategyChange {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background: $color-bg-hover;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-lg;
+}
+
+.strategyFrom, .strategyTo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+}
+
+.strategyArrow {
+  font-size: $font-size-xl;
+  color: $color-primary;
+}
+
+.previewSectionTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.paramCompareGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-lg;
+}
+
+.paramCompareItem {
+  background: $color-bg-hover;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  text-align: center;
+}
+
+.paramLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: 8rpx;
+}
+
+.paramChangeBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  margin-bottom: 6rpx;
+}
+
+.paramFrom {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  text-decoration: line-through;
+}
+
+.paramArrow {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.paramTo {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-primary;
+}
+
+.paramDelta {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+
+  &.deltaUp {
+    color: $color-success;
+  }
+
+  &.deltaDown {
+    color: $color-error;
+  }
+}
+
+.impactSection {
+  background: $color-bg-hover;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.impactRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-sm 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.impactLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.impactValue {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.impactValue.positive {
+  color: $color-success;
+}
+
+.impactValue.negative {
+  color: $color-error;
+}
+
+.zoneTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.zoneTag {
+  font-size: $font-size-xs;
+  padding: 6rpx 16rpx;
+  border-radius: $radius-round;
+  background: $gradient-primary;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
+
+.previewTip {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  padding: $spacing-sm $spacing-md;
+  background: rgba(22, 119, 255, 0.06);
+  border-radius: $radius-md;
+  margin-bottom: $spacing-lg;
+}
+
+.previewActions {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.previewBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-lg;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  background: $color-bg-hover;
+  color: $color-text-secondary;
+}
+
+.previewBtnPrimary {
+  background: $gradient-primary;
+  color: $color-text-white;
+}

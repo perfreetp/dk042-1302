@@ -84,30 +84,74 @@
 }
 
 .quickActions {
-  display: flex;
-  gap: $spacing-md;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $spacing-sm;
 }
 
 .actionBtn {
   @include button-reset;
-  flex: 1;
   height: $button-height-md;
   border-radius: $radius-button;
-  font-size: $font-size-md;
+  font-size: $font-size-sm;
   font-weight: $font-weight-medium;
   background: rgba(22, 119, 255, 0.08);
   color: $color-primary;
   border: 1rpx solid rgba(22, 119, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6rpx;
+  transition: all $transition-base;
 
   &:active {
     opacity: 0.85;
+    transform: scale(0.96);
   }
 }
 
-.actionBtnPrimary {
-  background: $gradient-turnover;
+.actionBtnActive {
+  background: $gradient-primary;
   color: $color-text-white;
   border: none;
+  font-weight: $font-weight-semibold;
+  box-shadow: $shadow-primary;
+}
+
+.actionBtnTurnover {
+  background: rgba(255, 125, 0, 0.1);
+  color: $color-warning;
+  border-color: rgba(255, 125, 0, 0.25);
+
+  &.actionBtnActive {
+    background: $gradient-turnover;
+    color: $color-text-white;
+    border-color: transparent;
+  }
+}
+
+.actionBtnEnergy {
+  background: rgba(0, 180, 42, 0.1);
+  color: $color-success;
+  border-color: rgba(0, 180, 42, 0.25);
+
+  &.actionBtnActive {
+    background: $gradient-energy;
+    color: $color-text-white;
+    border-color: transparent;
+  }
+}
+
+.actionBtnVip {
+  background: rgba(123, 97, 255, 0.1);
+  color: $color-vip;
+  border-color: rgba(123, 97, 255, 0.25);
+
+  &.actionBtnActive {
+    background: $gradient-vip;
+    color: $color-text-white;
+    border-color: transparent;
+  }
 }
 
 .zoneScroll {

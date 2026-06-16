@@ -14,14 +14,13 @@ import {
   mockTeamOnDuty,
   mockCoreStats
 } from '@/data/mockDashboard';
-import { mockStrategies } from '@/data/mockStrategy';
+import { mockStrategies, strategyIconMap } from '@/data/mockStrategy';
 import { useChargeStore } from '@/store/useChargeStore';
 import type { ZoneStat, AlertItem, StrategyType } from '@/types';
 
 const DashboardPage: React.FC = () => {
   const activeStrategyId = useChargeStore(s => s.activeStrategyId);
   const setStoreStrategy = useChargeStore(s => s.setActiveStrategy);
-  const addIntervention = useChargeStore(s => s.addIntervention);
   const storeAlerts = useChargeStore(s => s.alerts);
 
   const currentTime = dayjs().format('MM-DD HH:mm');
@@ -29,16 +28,17 @@ const DashboardPage: React.FC = () => {
 
   const handleSwitchStrategy = (strategyId: StrategyType) => {
     if (strategyId === activeStrategyId) return;
-    setStoreStrategy(strategyId);
     const strategy = mockStrategies.find(s => s.id === strategyId);
-    addIntervention({
-      operatorId: 'm1',
-      operatorName: '张经理',
-      action: '切换策略',
-      description: `从首页快捷切换至「${strategy?.name}」`
-    });
+    setStoreStrategy(strategyId, 'm1', '张经理', 'manual');
     Taro.showToast({ title: `已切换至${strategy?.name}`, icon: 'success' });
   };
+
+  const quickStrategies: { id: StrategyType; name: string; icon: string; className: string }[] = [
+    { id: 'balanced', name: '均衡', icon: '⚖️', className: '' },
+    { id: 'highTurnover', name: '高周转', icon: '⚡', className: styles.actionBtnTurnover },
+    { id: 'energySaving', name: '节能', icon: '🌱', className: styles.actionBtnEnergy },
+    { id: 'vipPriority', name: 'VIP优先', icon: '👑', className: styles.actionBtnVip }
+  ];
 
   const getBusyLevelClass = (level: number) => {
     if (level >= 85) return styles.zoneLevelHigh;
@@ -124,18 +124,23 @@ const DashboardPage: React.FC = () => {
           </View>
 
           <View className={styles.quickActions}>
-            <View
-              className={styles.actionBtn}
-              onClick={() => handleSwitchStrategy('balanced')}
-            >
-              <Text>均衡模式</Text>
-            </View>
-            <View
-              className={classnames(styles.actionBtn, styles.actionBtnPrimary)}
-              onClick={() => handleSwitchStrategy('highTurnover')}
-            >
-              <Text>⚡ 高周转</Text>
-            </View>
+            {quickStrategies.map(s => {
+              const isActive = s.id === activeStrategyId;
+              return (
+                <View
+                  key={s.id}
+                  className={classnames(
+                    styles.actionBtn,
+                    s.className,
+                    isActive && styles.actionBtnActive
+                  )}
+                  onClick={() => handleSwitchStrategy(s.id)}
+                >
+                  <Text>{s.icon}</Text>
+                  <Text>{s.name}</Text>
+                </View>
+              );
+            })}
           </View>
         </View>
 

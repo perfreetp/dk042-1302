@@ -15,6 +15,9 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
 
 .filterItem {
@@ -26,6 +29,7 @@
   position: relative;
   white-space: nowrap;
   transition: all $transition-base;
+  flex-shrink: 0;
 }
 
 .filterItemActive {
@@ -48,6 +52,22 @@
   align-items: center;
   justify-content: center;
   font-weight: $font-weight-semibold;
+}
+
+.batchToggleBtn {
+  margin-left: auto;
+  padding: 12rpx 20rpx;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  background: rgba(255, 125, 0, 0.1);
+  color: $color-warning;
+  flex-shrink: 0;
+}
+
+.batchToggleBtnActive {
+  background: $gradient-turnover;
+  color: $color-text-white;
 }
 
 .statsRow {
@@ -101,6 +121,8 @@
   box-shadow: $shadow-card;
   border-left: 8rpx solid transparent;
   transition: all $transition-base;
+  display: flex;
+  gap: $spacing-md;
 
   &:active {
     opacity: 0.92;
@@ -121,6 +143,37 @@
 
 .alertHandled {
   opacity: 0.65;
+}
+
+.checkbox {
+  width: 40rpx;
+  height: 40rpx;
+  border: 3rpx solid $color-border;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 6rpx;
+  transition: all $transition-base;
+}
+
+.checkboxChecked {
+  background: $gradient-primary;
+  border-color: $color-primary;
+  color: $color-text-white;
+  font-size: 24rpx;
+  font-weight: bold;
+}
+
+.cardContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardDisabled {
+  opacity: 0.4;
+  pointer-events: none;
 }
 
 .cardTop {
@@ -242,4 +295,51 @@
 .emptyText {
   font-size: $font-size-md;
   color: $color-text-tertiary;
+}
+
+.batchBar {
+  position: fixed;
+  bottom: 100rpx;
+  left: $page-padding;
+  right: $page-padding;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  box-shadow: 0 -8rpx 32rpx rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 20;
+}
+
+.batchInfo {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.batchCount {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+  margin: 0 6rpx;
+}
+
+.batchActions {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.batchBtn {
+  @include button-reset;
+  padding: 16rpx 32rpx;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  background: $color-bg-hover;
+  color: $color-text-secondary;
+}
+
+.batchBtnPrimary {
+  background: $gradient-turnover;
+  color: $color-text-white;
 }
