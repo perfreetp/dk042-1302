@@ -4,15 +4,18 @@ import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
-import SectionHeader from '@/components/SectionHeader';
-import { mockTeamMembers, mockInterventionLogs, mockTurnoverStats, mockDailySummary } from '@/data/mockTeam';
 import { strategyIconMap, strategyColorMap } from '@/data/mockStrategy';
-import type { TeamMember } from '@/types';
+import { useChargeStore } from '@/store/useChargeStore';
+import { mockTurnoverStats, mockDailySummary } from '@/data/mockTeam';
 
 type TabKey = 'team' | 'logs' | 'turnover' | 'summary';
 
 const TeamPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabKey>('team');
+  const teamMembers = useChargeStore(s => s.teamMembers);
+  const interventionLogs = useChargeStore(s => s.interventionLogs);
+  const authorizePowerBoost = useChargeStore(s => s.authorizePowerBoost);
+  const addIntervention = useChargeStore(s => s.addIntervention);
 
   const roleLabels = {
     manager: '值班经理',
@@ -27,25 +30,46 @@ const TeamPage: React.FC = () => {
     { key: 'summary', label: '复盘摘要' }
   ];
 
-  const onCallMember = (member: TeamMember) => {
-    if (!member.isOnDuty) {
+  const onCallMember = (memberId: string, name: string, isOnDuty: boolean) => {
+    if (!isOnDuty) {
       Taro.showToast({ title: '该人员未在岗', icon: 'none' });
       return;
     }
-    console.log('[Team] 联系成员:', member.id);
-    Taro.showToast({ title: `正在呼叫${member.name}`, icon: 'none' });
+    Taro.showToast({ title: `正在呼叫${name}`, icon: 'none' });
   };
 
   const handleAuth = () => {
     Taro.showActionSheet({
-      itemList: ['授权C-01桩提功率', '授权D区全区域提功率', '临时解除VIP预留', '取消'],
+      itemList: ['授权C-01桩提功率', '授权D区全区域提功率', '临时解除VIP预留'],
       success: (res) => {
-        if (res.tapIndex < 3) {
-          Taro.showToast({ title: '授权成功', icon: 'success' });
+        if (res.tapIndex === 0) {
+          authorizePowerBoost('C-01', 'm1', '张经理');
+          Taro.showToast({ title: '已授权C-01提功率', icon: 'success' });
+        } else if (res.tapIndex === 1) {
+          addIntervention({
+            operatorId: 'm1',
+            operatorName: '张经理',
+            action: '区域提功率',
+            description: '授权D区全区域临时提升功率',
+            zoneId: 'D'
+          });
+          Taro.showToast({ title: '已授权D区提功率', icon: 'success' });
+        } else if (res.tapIndex === 2) {
+          addIntervention({
+            operatorId: 'm1',
+            operatorName: '张经理',
+            action: '解除预留',
+            description: '临时解除VIP区预留功率限制'
+          });
+          Taro.showToast({ title: '已解除VIP预留', icon: 'success' });
         }
       }
     });
   };
+
+  const todayInterventionCount = interventionLogs.filter(
+    log => dayjs(log.timestamp).format('YYYY-MM-DD') === dayjs().format('YYYY-MM-DD')
+  ).length || interventionLogs.length;
 
   return (
     <ScrollView className={styles.page} scrollY>
@@ -53,13 +77,13 @@ const TeamPage: React.FC = () => {
         <View className={styles.summaryRow}>
           <View className={styles.summaryItem}>
             <Text className={styles.summaryValue}>
-              {mockTeamMembers.filter(m => m.isOnDuty).length}
+              {teamMembers.filter(m => m.isOnDuty).length}
             </Text>
             <Text className={styles.summaryLabel}>在岗人数</Text>
           </View>
           <View className={styles.summaryItem}>
             <Text className={classnames(styles.summaryValue, styles.summaryValueBlue)}>
-              {mockInterventionLogs.length}
+              {todayInterventionCount}
             </Text>
             <Text className={styles.summaryLabel}>今日干预</Text>
           </View>
@@ -107,11 +131,11 @@ const TeamPage: React.FC = () => {
 
         {activeTab === 'team' && (
           <View className={styles.teamList}>
-            {mockTeamMembers.map(member => (
+            {teamMembers.map(member => (
               <View
                 key={member.id}
                 className={styles.teamCard}
-                onClick={() => onCallMember(member)}
+                onClick={() => onCallMember(member.id, member.name, member.isOnDuty)}
               >
                 <View className={classnames(styles.teamAvatar, !member.isOnDuty && styles.teamAvatarOff)}>
                   <Text>{member.name.slice(0, 1)}</Text>
@@ -130,18 +154,24 @@ const TeamPage: React.FC = () => {
 
         {activeTab === 'logs' && (
           <View className={styles.logList}>
-            {mockInterventionLogs.map(log => (
-              <View key={log.id} className={styles.logCard}>
-                <View className={styles.logHeader}>
-                  <Text className={styles.logAction}>{log.action}</Text>
-                  <Text className={styles.logTime}>
-                    {dayjs(log.timestamp).format('HH:mm')}
-                  </Text>
-                </View>
-                <Text className={styles.logOperator}>{log.operatorName}</Text>
-                <Text className={styles.logDesc}>{log.description}</Text>
+            {interventionLogs.length === 0 ? (
+              <View className={styles.emptyState}>
+                <Text>暂无干预记录</Text>
               </View>
-            ))}
+            ) : (
+              interventionLogs.map(log => (
+                <View key={log.id} className={styles.logCard}>
+                  <View className={styles.logHeader}>
+                    <Text className={styles.logAction}>{log.action}</Text>
+                    <Text className={styles.logTime}>
+                      {dayjs(log.timestamp).format('HH:mm')}
+                    </Text>
+                  </View>
+                  <Text className={styles.logOperator}>{log.operatorName}</Text>
+                  <Text className={styles.logDesc}>{log.description}</Text>
+                </View>
+              ))
+            )}
           </View>
         )}
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
@@ -11,7 +11,6 @@ import StrategyTag from '@/components/StrategyTag';
 import {
   mockPowerPool,
   mockZoneStats,
-  mockDashboardAlerts,
   mockTeamOnDuty,
   mockCoreStats
 } from '@/data/mockDashboard';
@@ -20,15 +19,16 @@ import { useChargeStore } from '@/store/useChargeStore';
 import type { ZoneStat, AlertItem, StrategyType } from '@/types';
 
 const DashboardPage: React.FC = () => {
-  const [activeStrategy, setActiveStrategy] = useState<StrategyType>('balanced');
+  const activeStrategyId = useChargeStore(s => s.activeStrategyId);
   const setStoreStrategy = useChargeStore(s => s.setActiveStrategy);
   const addIntervention = useChargeStore(s => s.addIntervention);
+  const storeAlerts = useChargeStore(s => s.alerts);
 
   const currentTime = dayjs().format('MM-DD HH:mm');
-  const activeStrategyData = mockStrategies.find(s => s.id === activeStrategy) || mockStrategies[0];
+  const activeStrategyData = mockStrategies.find(s => s.id === activeStrategyId) || mockStrategies[0];
 
   const handleSwitchStrategy = (strategyId: StrategyType) => {
-    setActiveStrategy(strategyId);
+    if (strategyId === activeStrategyId) return;
     setStoreStrategy(strategyId);
     const strategy = mockStrategies.find(s => s.id === strategyId);
     addIntervention({
@@ -38,7 +38,6 @@ const DashboardPage: React.FC = () => {
       description: `从首页快捷切换至「${strategy?.name}」`
     });
     Taro.showToast({ title: `已切换至${strategy?.name}`, icon: 'success' });
-    console.log('[Dashboard] 切换策略:', strategyId);
   };
 
   const getBusyLevelClass = (level: number) => {
@@ -187,7 +186,7 @@ const DashboardPage: React.FC = () => {
           onAction={() => Taro.switchTab({ url: '/pages/alerts/index' })}
         />
 
-        {mockDashboardAlerts.slice(0, 3).map(alert => (
+        {storeAlerts.filter(a => !a.isHandled).slice(0, 3).map(alert => (
           <View
             key={alert.id}
             className={classnames(

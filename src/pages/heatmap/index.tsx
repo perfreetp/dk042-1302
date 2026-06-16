@@ -5,19 +5,27 @@ import styles from './index.module.scss';
 import classnames from 'classnames';
 import SectionHeader from '@/components/SectionHeader';
 import PileCard from '@/components/PileCard';
-import { mockPiles } from '@/data/mockHeatmap';
 import { mockZoneStats } from '@/data/mockDashboard';
+import { useChargeStore } from '@/store/useChargeStore';
 import type { ChargingPile } from '@/types';
 
 type FilterType = 'all' | 'charging' | 'idle' | 'occupied' | 'fast' | 'slow';
 
 const HeatmapPage: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
-  const [selectedPile, setSelectedPile] = useState<ChargingPile | null>(null);
+  const [selectedPileId, setSelectedPileId] = useState<string | null>(null);
+  const storePiles = useChargeStore(s => s.piles);
+  const authorizePowerBoost = useChargeStore(s => s.authorizePowerBoost);
+  const handleOccupancy = useChargeStore(s => s.handleOccupancy);
+
+  const selectedPile = useMemo(
+    () => storePiles.find(p => p.id === selectedPileId) || null,
+    [storePiles, selectedPileId]
+  );
 
   const pilesByZone = useMemo(() => {
     const grouped: Record<string, ChargingPile[]> = {};
-    mockPiles.forEach(pile => {
+    storePiles.forEach(pile => {
       if (!grouped[pile.zoneId]) grouped[pile.zoneId] = [];
       if (activeFilter === 'all') {
         grouped[pile.zoneId].push(pile);
@@ -30,18 +38,18 @@ const HeatmapPage: React.FC = () => {
       }
     });
     return grouped;
-  }, [activeFilter]);
+  }, [activeFilter, storePiles]);
 
   const summary = useMemo(() => {
     return {
-      total: mockPiles.length,
-      charging: mockPiles.filter(p => p.status === 'charging').length,
-      idle: mockPiles.filter(p => p.status === 'idle').length,
-      occupied: mockPiles.filter(p => p.status === 'occupied').length,
-      fast: mockPiles.filter(p => p.vehicleType === 'fastCharge').length,
-      slow: mockPiles.filter(p => p.vehicleType === 'slowCharge').length
+      total: storePiles.length,
+      charging: storePiles.filter(p => p.status === 'charging').length,
+      idle: storePiles.filter(p => p.status === 'idle').length,
+      occupied: storePiles.filter(p => p.status === 'occupied').length,
+      fast: storePiles.filter(p => p.vehicleType === 'fastCharge').length,
+      slow: storePiles.filter(p => p.vehicleType === 'slowCharge').length
     };
-  }, []);
+  }, [storePiles]);
 
   const filters: { key: FilterType; label: string }[] = [
     { key: 'all', label: '全部' },
@@ -53,24 +61,24 @@ const HeatmapPage: React.FC = () => {
   ];
 
   const handlePileClick = (pile: ChargingPile) => {
-    setSelectedPile(pile);
-    console.log('[Heatmap] 选择桩:', pile.id);
+    setSelectedPileId(pile.id);
   };
 
   const closeModal = () => {
-    setSelectedPile(null);
+    setSelectedPileId(null);
   };
 
   const handleHandleOccupancy = () => {
-    if (!selectedPile) return;
-    Taro.showToast({ title: '已通知现场人员', icon: 'success' });
+    if (!selectedPileId) return;
+    handleOccupancy(selectedPileId, 'm1', '张经理');
+    Taro.showToast({ title: '已通知现场人员处置', icon: 'success' });
     closeModal();
   };
 
   const handleAuthorizeBoost = () => {
-    if (!selectedPile) return;
+    if (!selectedPileId) return;
+    authorizePowerBoost(selectedPileId, 'm1', '张经理');
     Taro.showToast({ title: '已授权提功率', icon: 'success' });
-    closeModal();
   };
 
   const getZoneBadgeClass = (zoneId: string) => {

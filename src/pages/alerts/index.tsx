@@ -4,7 +4,7 @@ import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import dayjs from 'dayjs';
-import { mockAlerts, alertTypeLabels, alertLevelColors } from '@/data/mockAlerts';
+import { alertTypeLabels, alertLevelColors } from '@/data/mockAlerts';
 import { useChargeStore } from '@/store/useChargeStore';
 import type { AlertItem, AlertLevel, AlertType } from '@/types';
 
@@ -12,19 +12,21 @@ type FilterKey = 'all' | 'unhandled' | AlertType;
 
 const AlertsPage: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<FilterKey>('all');
+  const storeAlerts = useChargeStore(s => s.alerts);
   const handleAlertStore = useChargeStore(s => s.handleAlert);
   const addIntervention = useChargeStore(s => s.addIntervention);
-  const [localAlerts, setLocalAlerts] = useState<AlertItem[]>(mockAlerts);
+  const setActiveStrategy = useChargeStore(s => s.setActiveStrategy);
+  const authorizePowerBoost = useChargeStore(s => s.authorizePowerBoost);
 
   const stats = useMemo(() => {
     return {
-      total: localAlerts.length,
-      critical: localAlerts.filter(a => a.level === 'critical' && !a.isHandled).length,
-      warning: localAlerts.filter(a => a.level === 'warning' && !a.isHandled).length,
-      info: localAlerts.filter(a => a.level === 'info' && !a.isHandled).length,
-      unhandled: localAlerts.filter(a => !a.isHandled).length
+      total: storeAlerts.length,
+      critical: storeAlerts.filter(a => a.level === 'critical' && !a.isHandled).length,
+      warning: storeAlerts.filter(a => a.level === 'warning' && !a.isHandled).length,
+      info: storeAlerts.filter(a => a.level === 'info' && !a.isHandled).length,
+      unhandled: storeAlerts.filter(a => !a.isHandled).length
     };
-  }, [localAlerts]);
+  }, [storeAlerts]);
 
   const filters: { key: FilterKey; label: string; count?: number }[] = [
     { key: 'all', label: '全部', count: stats.total },
@@ -36,10 +38,10 @@ const AlertsPage: React.FC = () => {
   ];
 
   const filteredAlerts = useMemo(() => {
-    if (activeFilter === 'all') return localAlerts;
-    if (activeFilter === 'unhandled') return localAlerts.filter(a => !a.isHandled);
-    return localAlerts.filter(a => a.type === activeFilter);
-  }, [activeFilter, localAlerts]);
+    if (activeFilter === 'all') return storeAlerts;
+    if (activeFilter === 'unhandled') return storeAlerts.filter(a => !a.isHandled);
+    return storeAlerts.filter(a => a.type === activeFilter);
+  }, [activeFilter, storeAlerts]);
 
   const getAlertClass = (level: AlertLevel) => {
     if (level === 'critical') return styles.alertCritical;
@@ -61,9 +63,6 @@ const AlertsPage: React.FC = () => {
 
   const handleAlert = (alert: AlertItem) => {
     if (alert.isHandled) return;
-    setLocalAlerts(prev =>
-      prev.map(a => (a.id === alert.id ? { ...a, isHandled: true } : a))
-    );
     handleAlertStore(alert.id);
     addIntervention({
       operatorId: 'm1',
@@ -74,23 +73,45 @@ const AlertsPage: React.FC = () => {
       zoneId: alert.zoneId
     });
     Taro.showToast({ title: '已标记为已处理', icon: 'success' });
-    console.log('[Alerts] 处理告警:', alert.id);
   };
 
-  const handleAction = (alert: AlertItem, actionType: string) => {
-    console.log('[Alerts] 执行操作:', alert.id, actionType);
-    if (actionType === 'dispatch') {
-      Taro.showToast({ title: '已派发现场人员', icon: 'success' });
-    } else if (actionType === 'switch') {
-      Taro.switchTab({ url: '/pages/strategy/index' });
-    } else if (actionType === 'authorize') {
-      Taro.showToast({ title: '已授权临时提功率', icon: 'success' });
+  const handleSwitchHighTurnover = (alert: AlertItem) => {
+    setActiveStrategy('highTurnover');
+    handleAlertStore(alert.id);
+    addIntervention({
+      operatorId: 'm1',
+      operatorName: '张经理',
+      action: '切换策略',
+      description: `因告警「${alert.title}」，从告警页切换至「高周转模式」`,
+      pileId: alert.pileId,
+      zoneId: alert.zoneId
+    });
+    Taro.showToast({ title: '已切换至高周转模式', icon: 'success' });
+  };
+
+  const handleAuthorize = (alert: AlertItem) => {
+    if (alert.pileId) {
+      authorizePowerBoost(alert.pileId, 'm1', '张经理');
     }
-    handleAlert(alert);
+    handleAlertStore(alert.id);
+    Taro.showToast({ title: '已授权临时提功率', icon: 'success' });
+  };
+
+  const handleDispatch = (alert: AlertItem) => {
+    handleAlertStore(alert.id);
+    addIntervention({
+      operatorId: 'm1',
+      operatorName: '张经理',
+      action: '派发人员',
+      description: `派发现场人员处理「${alert.title}」`,
+      pileId: alert.pileId,
+      zoneId: alert.zoneId
+    });
+    Taro.showToast({ title: '已派发现场人员', icon: 'success' });
   };
 
   const unhandledCount = (type: AlertType) =>
-    localAlerts.filter(a => a.type === type && !a.isHandled).length;
+    storeAlerts.filter(a => a.type === type && !a.isHandled).length;
 
   return (
     <ScrollView className={styles.page} scrollY>
@@ -170,7 +191,7 @@ const AlertsPage: React.FC = () => {
                 <View className={styles.actionRow}>
                   {alert.type === 'emptyOccupancy' && (
                     <>
-                      <View className={styles.actionBtn} onClick={() => handleAction(alert, 'dispatch')}>
+                      <View className={styles.actionBtn} onClick={() => handleDispatch(alert)}>
                         <Text>派发人员</Text>
                       </View>
                       <View className={classnames(styles.actionBtn, styles.actionBtnWarning)} onClick={() => handleAlert(alert)}>
@@ -183,18 +204,18 @@ const AlertsPage: React.FC = () => {
                       <View className={styles.actionBtn} onClick={() => handleAlert(alert)}>
                         <Text>稍后处理</Text>
                       </View>
-                      <View className={classnames(styles.actionBtn, styles.actionBtnPrimary)} onClick={() => handleAction(alert, 'switch')}>
+                      <View className={classnames(styles.actionBtn, styles.actionBtnPrimary)} onClick={() => handleSwitchHighTurnover(alert)}>
                         <Text>切换高周转</Text>
                       </View>
                     </>
                   )}
                   {alert.type === 'managerAuth' && (
-                    <View className={classnames(styles.actionBtn, styles.actionBtnPrimary)} onClick={() => handleAction(alert, 'authorize')}>
+                    <View className={classnames(styles.actionBtn, styles.actionBtnPrimary)} onClick={() => handleAuthorize(alert)}>
                       <Text>立即授权</Text>
                     </View>
                   )}
                   {alert.type === 'pileFault' && (
-                    <View className={classnames(styles.actionBtn, styles.actionBtnWarning)} onClick={() => handleAction(alert, 'dispatch')}>
+                    <View className={classnames(styles.actionBtn, styles.actionBtnWarning)} onClick={() => handleDispatch(alert)}>
                       <Text>派发维修</Text>
                     </View>
                   )}

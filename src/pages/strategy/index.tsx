@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
@@ -12,15 +12,14 @@ import { useChargeStore } from '@/store/useChargeStore';
 import type { StrategyType, ChargeStrategy } from '@/types';
 
 const StrategyPage: React.FC = () => {
-  const [activeStrategy, setActiveStrategy] = useState<StrategyType>('balanced');
+  const activeStrategyId = useChargeStore(s => s.activeStrategyId);
   const setStoreStrategy = useChargeStore(s => s.setActiveStrategy);
   const addIntervention = useChargeStore(s => s.addIntervention);
 
-  const currentStrategy = mockStrategies.find(s => s.id === activeStrategy) || mockStrategies[0];
+  const currentStrategy = mockStrategies.find(s => s.id === activeStrategyId) || mockStrategies[0];
 
   const handleSwitchStrategy = (strategy: ChargeStrategy) => {
-    if (strategy.id === activeStrategy) return;
-    setActiveStrategy(strategy.id);
+    if (strategy.id === activeStrategyId) return;
     setStoreStrategy(strategy.id);
     addIntervention({
       operatorId: 'm1',
@@ -29,7 +28,6 @@ const StrategyPage: React.FC = () => {
       description: `切换至「${strategy.name}」`
     });
     Taro.showToast({ title: `已切换至${strategy.name}`, icon: 'success' });
-    console.log('[Strategy] 切换策略:', strategy.id);
   };
 
   const schedules = [
@@ -66,7 +64,7 @@ const StrategyPage: React.FC = () => {
 
       <View className={styles.strategyList}>
         {mockStrategies.map(strategy => {
-          const isActive = strategy.id === activeStrategy;
+          const isActive = strategy.id === activeStrategyId;
           const color = strategyColorMap[strategy.id];
           return (
             <View
