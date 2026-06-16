@@ -1,0 +1,172 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  box-shadow: $shadow-card;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.cardCharging {
+  border-color: rgba(22, 119, 255, 0.3);
+  background: linear-gradient(135deg, rgba(22, 119, 255, 0.03) 0%, #fff 100%);
+}
+
+.cardIdle {
+  border-color: rgba(0, 180, 42, 0.2);
+}
+
+.cardOccupied {
+  border-color: rgba(255, 125, 0, 0.3);
+  background: linear-gradient(135deg, rgba(255, 125, 0, 0.03) 0%, #fff 100%);
+}
+
+.cardFault {
+  border-color: rgba(245, 63, 63, 0.3);
+  opacity: 0.75;
+}
+
+.cardVip {
+  border-color: rgba(123, 97, 255, 0.3);
+  background: linear-gradient(135deg, rgba(123, 97, 255, 0.04) 0%, #fff 100%);
+}
+
+.cardAccessible {
+  border-color: rgba(0, 180, 42, 0.3);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-sm;
+}
+
+.pileName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.tags {
+  display: flex;
+  gap: 8rpx;
+}
+
+.tag {
+  font-size: $font-size-xs;
+  padding: 2rpx 12rpx;
+  border-radius: $radius-xs;
+  font-weight: $font-weight-medium;
+}
+
+.tagCharging {
+  background: rgba(22, 119, 255, 0.1);
+  color: $color-primary;
+}
+
+.tagIdle {
+  background: rgba(0, 180, 42, 0.1);
+  color: $color-success;
+}
+
+.tagOccupied {
+  background: rgba(255, 125, 0, 0.1);
+  color: $color-warning;
+}
+
+.tagFault {
+  background: rgba(245, 63, 63, 0.1);
+  color: $color-error;
+}
+
+.tagVip {
+  background: rgba(123, 97, 255, 0.1);
+  color: $color-vip;
+}
+
+.tagAccessible {
+  background: rgba(0, 180, 42, 0.1);
+  color: $color-accessible;
+}
+
+.tagFast {
+  background: rgba(255, 125, 0, 0.1);
+  color: $color-turnover;
+}
+
+.tagSlow {
+  background: rgba(22, 119, 255, 0.1);
+  color: $color-primary;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: $spacing-sm;
+}
+
+.plate {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  font-family: monospace;
+  background: $color-bg-hover;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-xs;
+}
+
+.power {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.powerUnit {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-left: 4rpx;
+  font-weight: $font-weight-normal;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: $spacing-sm;
+  padding-top: $spacing-sm;
+  border-top: 1rpx solid $color-divider;
+}
+
+.metaItem {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.powerBar {
+  margin-top: $spacing-sm;
+  height: 8rpx;
+  background: $color-bg-hover;
+  border-radius: $radius-round;
+  overflow: hidden;
+}
+
+.powerFill {
+  height: 100%;
+  background: $gradient-primary;
+  border-radius: $radius-round;
+  transition: width $transition-base;
+}
+
+.powerFillFast {
+  background: $gradient-turnover;
+}
+
+.powerFillVip {
+  background: linear-gradient(135deg, #7b61ff 0%, #9d86ff 100%);
+}

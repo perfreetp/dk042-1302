@@ -1,0 +1,237 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding: $spacing-md $page-padding 120rpx;
+}
+
+.headerCard {
+  background: $gradient-dark;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+}
+
+.headerTitle {
+  font-size: $font-size-md;
+  color: $color-text-tertiary;
+  margin-bottom: $spacing-sm;
+}
+
+.headerName {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+}
+
+.headerDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: $spacing-xs;
+  @include text-ellipsis-multi(2);
+}
+
+.headerParams {
+  display: flex;
+  gap: $spacing-lg;
+  margin-top: $spacing-lg;
+  padding-top: $spacing-lg;
+  border-top: 1rpx solid rgba(255, 255, 255, 0.08);
+}
+
+.headerParam {
+  flex: 1;
+}
+
+.paramValue {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-primary-light;
+}
+
+.paramValueOrange {
+  color: $color-turnover-light;
+}
+
+.paramValueGreen {
+  color: $color-accessible-light;
+}
+
+.paramLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.strategyList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.strategyCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
+.strategyCardActive {
+  border-color: $color-primary;
+  background: linear-gradient(135deg, rgba(22, 119, 255, 0.04) 0%, #fff 100%);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-sm;
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.iconBox {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+.cardName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.activeBadge {
+  font-size: $font-size-xs;
+  padding: 6rpx 16rpx;
+  border-radius: $radius-round;
+  background: $gradient-primary;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
+
+.cardDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+  margin-bottom: $spacing-md;
+}
+
+.cardParams {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-sm;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.cardParam {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardParamLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.cardParamValue {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.switchBtn {
+  @include button-reset;
+  margin-top: $spacing-lg;
+  width: 100%;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  background: $gradient-primary;
+  color: $color-text-white;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.switchBtnActive {
+  background: $color-bg-hover;
+  color: $color-text-tertiary;
+}
+
+.scheduleSection {
+  margin-top: $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.scheduleTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.scheduleItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.scheduleItem:last-child {
+  border-bottom: none;
+}
+
+.scheduleTime {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.scheduleStrategy {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  background: rgba(22, 119, 255, 0.08);
+  padding: 6rpx 16rpx;
+  border-radius: $radius-round;
+}
+
+.addSchedule {
+  @include button-reset;
+  margin-top: $spacing-md;
+  width: 100%;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  background: $color-bg-hover;
+  color: $color-text-secondary;
+  border: 1rpx dashed $color-border;
+
+  &:active {
+    opacity: 0.85;
+  }
+}

@@ -1,0 +1,22 @@
+@use '@/styles/variables.scss' as *;
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 8rpx 20rpx;
+  border-radius: $radius-round;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  background: rgba(22, 119, 255, 0.1);
+  color: $color-primary;
+}
+
+.icon {
+  font-size: $font-size-md;
+}
+
+.active {
+  background: $color-primary;
+  color: $color-text-white;
+}

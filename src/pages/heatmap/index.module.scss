@@ -1,0 +1,241 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 120rpx;
+}
+
+.filterBar {
+  display: flex;
+  gap: $spacing-sm;
+  padding: $spacing-md $page-padding;
+  background: $color-bg-card;
+  border-bottom: 1rpx solid $color-divider;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.filterItem {
+  padding: 12rpx 28rpx;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  background: $color-bg-hover;
+  transition: all $transition-base;
+  white-space: nowrap;
+}
+
+.filterItemActive {
+  background: $color-primary;
+  color: $color-text-white;
+}
+
+.summaryBar {
+  display: flex;
+  justify-content: space-around;
+  padding: $spacing-lg $page-padding;
+  background: $gradient-dark;
+  border-bottom-left-radius: $radius-xl;
+  border-bottom-right-radius: $radius-xl;
+  margin-bottom: $spacing-md;
+}
+
+.summaryItem {
+  text-align: center;
+}
+
+.summaryValue {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+}
+
+.summaryValueBlue {
+  color: $color-primary-light;
+}
+
+.summaryValueGreen {
+  color: $color-accessible-light;
+}
+
+.summaryValueOrange {
+  color: $color-turnover-light;
+}
+
+.summaryValueRed {
+  color: #ff6b6b;
+}
+
+.summaryLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.zoneSection {
+  padding: 0 $page-padding;
+  margin-top: $spacing-md;
+}
+
+.zoneHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-sm;
+}
+
+.zoneTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.zoneBadge {
+  font-size: $font-size-xs;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-round;
+  background: rgba(22, 119, 255, 0.1);
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.zoneBadgeBusy {
+  background: rgba(245, 63, 63, 0.1);
+  color: $color-error;
+}
+
+.zoneBadgeMid {
+  background: rgba(255, 125, 0, 0.1);
+  color: $color-warning;
+}
+
+.pileGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+  padding: $spacing-md $page-padding;
+  margin-top: $spacing-md;
+  background: $color-bg-card;
+  margin: $spacing-md $page-padding 0;
+  border-radius: $radius-md;
+  box-shadow: $shadow-card;
+}
+
+.legendTitle {
+  width: 100%;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-xs;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.legendDot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 4rpx;
+}
+
+.detailModal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $color-bg-card;
+  border-top-left-radius: $radius-xl;
+  border-top-right-radius: $radius-xl;
+  padding: $spacing-lg;
+  padding-bottom: calc(#{$spacing-lg} + env(safe-area-inset-bottom));
+  z-index: 100;
+  box-shadow: 0 -4rpx 32rpx rgba(0, 0, 0, 0.15);
+  transform: translateY(0);
+  transition: transform $transition-base;
+}
+
+.modalHandle {
+  width: 64rpx;
+  height: 8rpx;
+  background: $color-border;
+  border-radius: $radius-round;
+  margin: 0 auto $spacing-md;
+}
+
+.modalTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.modalRow {
+  display: flex;
+  justify-content: space-between;
+  padding: $spacing-sm 0;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.modalLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.modalValue {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.modalActions {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+}
+
+.modalBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  background: $color-bg-hover;
+  color: $color-text-primary;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.modalBtnPrimary {
+  background: $gradient-primary;
+  color: $color-text-white;
+}
+
+.modalBtnWarning {
+  background: $gradient-turnover;
+  color: $color-text-white;
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}

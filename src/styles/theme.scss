@@ -1,0 +1,46 @@
+// ============================================
+// 主题配色变量（充电桩功率池管控 App）
+// ============================================
+
+// 品牌主题色：科技蓝（电力/能源行业代表色）
+$color-primary: #1677ff;
+$color-primary-light: #4096ff;
+$color-primary-dark: #0e5ddb;
+
+// 业务辅助色
+$color-turnover: #ff7d00;
+$color-turnover-light: #ffa940;
+$color-vip: #7b61ff;
+$color-vip-light: #9d86ff;
+$color-accessible: #00b42a;
+$color-accessible-light: #23c343;
+
+// 功能色
+$color-success: #00b42a;
+$color-warning: #ff7d00;
+$color-error: #f53f3f;
+$color-info: #1677ff;
+
+// 背景色
+$color-bg-page: #f2f3f5;
+$color-bg-card: #ffffff;
+$color-bg-hover: #f2f3f5;
+$color-bg-dark: #0f172a;
+$color-bg-dark-2: #1e293b;
+
+// 文本色
+$color-text-primary: #1d2129;
+$color-text-secondary: #4e5969;
+$color-text-tertiary: #86909c;
+$color-text-disabled: #c9cdd4;
+$color-text-white: #ffffff;
+
+// 边框色
+$color-border: #e5e6eb;
+$color-divider: #f2f3f5;
+
+// 渐变
+$gradient-primary: linear-gradient(135deg, #1677ff 0%, #4096ff 100%);
+$gradient-turnover: linear-gradient(135deg, #ff7d00 0%, #ffa940 100%);
+$gradient-success: linear-gradient(135deg, #00b42a 0%, #23c343 100%);
+$gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);

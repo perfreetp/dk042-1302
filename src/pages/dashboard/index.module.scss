@@ -1,0 +1,316 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 120rpx;
+}
+
+.topSection {
+  background: $gradient-dark;
+  padding: $spacing-lg $page-padding $spacing-xl;
+  padding-top: calc(#{$spacing-lg} + env(safe-area-inset-top));
+  border-bottom-left-radius: 32rpx;
+  border-bottom-right-radius: 32rpx;
+  margin-bottom: $spacing-md;
+}
+
+.pageTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+}
+
+.titleText {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+}
+
+.timeText {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+}
+
+.contentSection {
+  padding: 0 $page-padding;
+  margin-top: $spacing-md;
+}
+
+.strategyCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+}
+
+.strategyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.strategyTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.strategyBody {
+  display: flex;
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.strategyInfo {
+  flex: 1;
+}
+
+.strategyName {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  margin-top: $spacing-xs;
+  @include text-ellipsis-multi(2);
+}
+
+.quickActions {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.actionBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  background: rgba(22, 119, 255, 0.08);
+  color: $color-primary;
+  border: 1rpx solid rgba(22, 119, 255, 0.2);
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.actionBtnPrimary {
+  background: $gradient-turnover;
+  color: $color-text-white;
+  border: none;
+}
+
+.zoneScroll {
+  margin-bottom: $spacing-md;
+  @include scroll-x-container;
+}
+
+.zoneCard {
+  @include scroll-x-item(280rpx);
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-right: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.zoneHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-sm;
+}
+
+.zoneName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  max-width: 180rpx;
+}
+
+.zoneLevel {
+  font-size: $font-size-xs;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-round;
+  font-weight: $font-weight-medium;
+}
+
+.zoneLevelHigh {
+  background: rgba(245, 63, 63, 0.1);
+  color: $color-error;
+}
+
+.zoneLevelMid {
+  background: rgba(255, 125, 0, 0.1);
+  color: $color-warning;
+}
+
+.zoneLevelLow {
+  background: rgba(0, 180, 42, 0.1);
+  color: $color-success;
+}
+
+.zoneStats {
+  display: flex;
+  gap: $spacing-sm;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: $spacing-sm;
+}
+
+.zoneBusyBar {
+  height: 12rpx;
+  background: $color-bg-hover;
+  border-radius: $radius-round;
+  overflow: hidden;
+}
+
+.zoneBusyFill {
+  height: 100%;
+  border-radius: $radius-round;
+  transition: width $transition-base;
+}
+
+.alertCard {
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-sm;
+  box-shadow: $shadow-card;
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-md;
+  border-left: 6rpx solid transparent;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.alertCritical {
+  border-left-color: $color-error;
+}
+
+.alertWarning {
+  border-left-color: $color-warning;
+}
+
+.alertInfo {
+  border-left-color: $color-info;
+}
+
+.alertContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.alertTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+}
+
+.alertDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: 6rpx;
+  @include text-ellipsis-multi(2);
+}
+
+.alertTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  white-space: nowrap;
+}
+
+.alertHandled {
+  opacity: 0.6;
+}
+
+.teamCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.teamList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+}
+
+.teamItem {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  background: $color-bg-hover;
+  border-radius: $radius-md;
+}
+
+.teamAvatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: $gradient-primary;
+  color: $color-text-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+}
+
+.teamInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.teamName {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+}
+
+.teamRole {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.teamDuty {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.dutyDot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: $color-success;
+}
+
+.dutyDotOff {
+  background: $color-text-disabled;
+}
+
+.refreshTip {
+  text-align: center;
+  padding: $spacing-lg;
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}

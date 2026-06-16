@@ -1,0 +1,389 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: 120rpx;
+}
+
+.section {
+  padding: 0 $page-padding;
+  margin-top: $spacing-md;
+}
+
+.summaryCard {
+  background: $gradient-dark;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin: $spacing-md $page-padding;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: $spacing-lg;
+}
+
+.summaryItem {
+  text-align: center;
+}
+
+.summaryValue {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-white;
+}
+
+.summaryValueBlue {
+  color: $color-primary-light;
+}
+
+.summaryValueGreen {
+  color: $color-accessible-light;
+}
+
+.summaryValueOrange {
+  color: $color-turnover-light;
+}
+
+.summaryLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.managerBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-md;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: $radius-md;
+}
+
+.managerInfo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.managerAvatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: $gradient-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-text-white;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+}
+
+.managerText {
+  display: flex;
+  flex-direction: column;
+}
+
+.managerName {
+  font-size: $font-size-md;
+  color: $color-text-white;
+  font-weight: $font-weight-semibold;
+}
+
+.managerRole {
+  font-size: $font-size-xs;
+  color: $color-primary-light;
+}
+
+.authBtn {
+  @include button-reset;
+  height: $button-height-sm;
+  padding: 0 $spacing-lg;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  background: $gradient-turnover;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.teamList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.teamCard {
+  flex: 1;
+  min-width: 200rpx;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  box-shadow: $shadow-card;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.teamAvatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: $gradient-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+}
+
+.teamAvatarOff {
+  background: $color-text-disabled;
+}
+
+.teamInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.teamName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  @include text-ellipsis;
+}
+
+.teamStatus {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.statusDot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: $color-success;
+}
+
+.statusDotOff {
+  background: $color-text-disabled;
+}
+
+.tabBar {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+}
+
+.tabItem {
+  padding: 12rpx 28rpx;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  background: $color-bg-card;
+  transition: all $transition-base;
+}
+
+.tabItemActive {
+  background: $color-primary;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
+
+.logList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.logCard {
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.logHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-xs;
+}
+
+.logAction {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.logTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.logOperator {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  margin-bottom: $spacing-xs;
+}
+
+.logDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+}
+
+.turnoverList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.turnoverCard {
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  box-shadow: $shadow-card;
+}
+
+.turnoverHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+}
+
+.turnoverStrategy {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.turnoverDate {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.turnoverStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: $spacing-sm;
+}
+
+.turnoverStat {
+  text-align: center;
+  padding: $spacing-sm;
+  background: $color-bg-hover;
+  border-radius: $radius-xs;
+}
+
+.turnoverStatValue {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.turnoverStatLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.summaryCardLight {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.summaryHeader {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.summaryDate {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-lg;
+}
+
+.summaryStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.summaryStat {
+  display: flex;
+  flex-direction: column;
+}
+
+.summaryStatValue {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.summaryStatLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.subTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin: $spacing-md 0 $spacing-sm;
+}
+
+.eventItem {
+  padding: $spacing-sm 0;
+  border-bottom: 1rpx solid $color-divider;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+  padding-left: $spacing-md;
+  position: relative;
+
+  &::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: $color-primary;
+    font-weight: $font-weight-bold;
+  }
+}
+
+.eventItem:last-child {
+  border-bottom: none;
+}
+
+.suggestionItem {
+  padding: $spacing-sm 0;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+  padding-left: $spacing-md;
+  position: relative;
+
+  &::before {
+    content: '💡';
+    position: absolute;
+    left: -8rpx;
+  }
+}
